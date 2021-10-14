@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page d'acceuil</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='home.css'>
+</head>
+<body style="margin-top: 0%; margin-left: 0%;">
+    <nav class="nav">
+        <div class="container">
+            <div class="logo">
+                <a href="main">FindTheWord</a>
+            </div>
+            <div id="mainListDiv" class="main_list">
+                <ul class="navlinks">
+                    <li><a href="#">Lancer une partie</a></li>
+                    <li><a href="#">Crédits</a></li>
+                    <li><a href="login" id="loginField"></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section class="home">
+        <br><br><br><br><br><br><br><br><br><br>
+        <h2 class="myH2">Pourquoi y'a T devant mon pseudo ?</h2>
+        <br>
+        <h3 class="myH3" style="margin-left: 2%;">Mais c'est tout simple Jamy !<br><br>Je m'explique, votre nom d'utilisateur est enregistré dans le merveilleux monde des cookies 🍪.<br>Mais pas d'inquiétudes, nous on prends pas votre données personnelles. On enregistre ton pseudo (temporairement). <br>Donc pour revenir au sujet principal, le "T" signifie temporaire.</h3>
+        <a class="myH3" href="main" style="margin-left: 2%;">Retourner à la page principale.</h3>
+    </section>
+    <div style="height: 1000px">
+
+    </div>
+
+<!-- Jquery needed -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- <script src="js/scripts.js"></script> -->
+
+<!-- Function used to shrink nav bar removing paddings and adding black background -->
+    <script>
+        $(window).scroll(function() {
+            if ($(document).scrollTop() > 50) {
+                $('.nav').addClass('affix');
+                // console.log("OK");
+            } else {
+                $('.nav').removeClass('affix');
+            }
+        });
+    </script>
+</body>
+</html>
+
+<script>
+    $('.navTrigger').click(function () {
+    $(this).toggleClass('active');
+    console.log("Clicked menu");
+    $("#mainListDiv").toggleClass("show_list");
+    $("#mainListDiv").fadeIn();
+
+});
+
+</script>
+<script src="/socket.io/socket.io.js"></script>

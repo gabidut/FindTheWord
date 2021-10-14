@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page d'acceuil</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' media='screen' href='party.css'>
+</head>
+<body style="margin-top: 0%; margin-left: 0%;">
+    <nav class="nav topnav" id="myTopnav">
+        <div class="container">
+            <div class="logo">
+                <a href="#">FindTheWord</a>
+                <button style="background-color: transparent; border: none; text-align: right;" class="hidden" id="btn1" onclick="change()"><i class="ilogo fas fa-bars"></i></button>
+            </div>
+            <div id="navlinks" class="main_list">
+                <ul class="navlinks">
+                    <li><button style="background-color: transparent; border: none;" id="btn0" onclick="change()"><i class="ilogo fas fa-bars"></i></button></li>
+                    <li><a href="#">Lancer une partie</a></li>
+                    <li><a href="#">Crédits</a></li>
+                    <li><a href="login" id="loginField"></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <section class="home">
+        <br><br><br><br><br><br><br>
+        <h2 class="myH2">Rejoindre une partie centrale :</h2>
+
+        <section class="page-contain" id="cards">
+            <!-- <a href="#" class="data-card">
+              <h3>AAA-000</h3>
+              <h4>00/00 Joueurs dans la partie</h4>
+              <p>Partie hébergée par ####</p>
+              <span class="link-text">
+                Rejoindre
+                <svg width="25" height="16" viewBox="0 0 25 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17.8631 0.929124L24.2271 7.29308C24.6176 7.68361 24.6176 8.31677 24.2271 8.7073L17.8631 15.0713C17.4726 15.4618 16.8394 15.4618 16.4489 15.0713C16.0584 14.6807 16.0584 14.0476 16.4489 13.657L21.1058 9.00019H0.47998V7.00019H21.1058L16.4489 2.34334C16.0584 1.95281 16.0584 1.31965 16.4489 0.929124C16.8394 0.538599 17.4726 0.538599 17.8631 0.929124Z" fill="#753BBD"/>
+          </svg>
+              </span>
+            </a> -->
+          </section>
+    </section>
+    <div style="height: 1000px">
+        <br>
+
+    </div>
+
+<!-- Jquery needed -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- <script src="js/scripts.js"></script> -->
+
+<!-- Function used to shrink nav bar removing paddings and adding black background -->
+<script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+    console.log("DOM entièrement chargé et analysé");
+    change()
+    change()
+    });
+    var display = true;
+    function change() {
+        console.log(display)
+        if ( display == true ) {
+            display = false;
+            // document.getElementById('navlinks').removeAttribute('class', 'hidden');
+            // document.getElementById('btn1').setAttribute('class', 'hidden');
+
+
+            var navlinks = document.getElementById("navlinks");
+            navlinks.style.visibility='hidden';
+            var btn1 = document.getElementById("btn1");
+            btn1.style.visibility='visible';
+        } else if ( display == false ) {
+            display = true;
+            var navlinks = document.getElementById("navlinks");
+            navlinks.style.visibility='visible';
+            var btn1 = document.getElementById("btn1");
+            btn1.style.visibility='hidden';
+
+
+            // document.getElementById('navlinks').setAttribute('class', 'hidden');
+            // document.getElementById('btn1').removeAttribute('class', 'hidden');
+        }
+    }
+    // $('#btn1').click(function () {
+    //     console.log(display)
+    //     if ( display === true ) {
+    //         display = false;
+    //         document.getElementById('navlinks').removeAttribute('class', 'hidden')
+    //         document.getElementById('btn1').setAttribute('class', 'hidden');
+    //     } else if ( display === false ) {
+    //         display = true;
+    //         document.getElementById('navlinks').setAttribute('class', 'hidden')
+    //         document.getElementById('btn1').removeAttribute('class', 'hidden');
+    //     }
+    // });
+    // $('#btn0').click(function () {
+    //     console.log(display)
+    //     if ( display === true ) {
+    //         display = false;
+    //         document.getElementById('navlinks').removeAttribute('class', 'hidden')
+    //         document.getElementById('btn1').setAttribute('class', 'hidden');
+    //     } else if ( display === false ) {
+    //         display = true;
+    //         document.getElementById('navlinks').setAttribute('class', 'hidden')
+    //         document.getElementById('btn1').removeAttribute('class', 'hidden');
+
+    //     }
+    // });
+    
+    $('.navTrigger').click(function () {
+    $(this).toggleClass('active');
+    console.log("Clicked menu");
+    $("#mainListDiv").toggleClass("show_list");
+    $("#mainListDiv").fadeIn();
+
+
+});
+
+
+
+</script>
+<script>
+    $(window).scroll(function() {
+        if ($(document).scrollTop() > 50) {
+            $('.nav').addClass('affix');
+            // console.log("OK");
+        } else {
+            $('.nav').removeClass('affix');
+        }
+    });
+</script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+    var socket = io();
+    function init() {
+        const total = 0;
+        socket.emit('login?')
+    }
+
+    socket.on("login!", function(text, href) { 
+        document.getElementById("loginField").innerText = text;
+        document.getElementById("loginField").setAttribute('href', href);
+    })
+    
+
+    window.addEventListener('load', init(), false )
+    window.addEventListener('load', socket.emit('add'), false )
+
+    socket.on('listPartys', function(game_id, players_number, owner) {
+        let i = 0;
+        for (const element of Object(game_id)) {
+            // console.log(element[`${Object.keys(element)}`])
+            c(Object.keys(element), players_number, element[`${Object.keys(element)}`], Object.keys(element));
+            i++;
+        }
+    });
+
+    function c(id, nb, owner, redirect) { 
+
+        var a = document.createElement("a");
+        var h4 = document.createElement("h4");
+        let h3 = document.createElement("h3");
+        var h1 = document.createElement("h1");
+        var p = document.createElement("p");
+        var span = document.createElement("span");
+        const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        const iconPath = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'path'
+        );
+
+        // var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        // var path = document.createElement("path");
+
+        h3.innerText = id
+        h4.innerText = nb + " Joueurs dans la partie."
+        
+        a.setAttribute('href', '/auth/' + redirect)
+        a.setAttribute('class', 'data-card')
+
+        p.innerText = "Partie hébergée par " + owner
+        span.innerText = "Rejoindre"
+
+        span.setAttribute('class', 'link-text')
+        span.setAttribute('href', '/auth')
+
+        iconSvg.setAttribute('width', '25');
+        iconSvg.setAttribute('height', '16');
+        iconSvg.setAttribute('fill', 'none');
+        iconSvg.setAttribute('viewBox', '0 0 25 16');
+        iconSvg.classList.add('post-icon');
+
+
+        // svg.setAttribute('width', '25')
+        // svg.setAttribute('height', '16')
+        // svg.setAttribute('viewBox', '0 0 25 16')
+        // svg.setAttribute('fill', 'none')
+        // svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+
+        // path.setAttribute('fill-rule', 'evenodd')
+        // path.setAttribute('clip-rule', 'evenodd')
+        // path.setAttribute('d', "M17.8631 0.929124L24.2271 7.29308C24.6176 7.68361 24.6176 8.31677 24.2271 8.7073L17.8631 15.0713C17.4726 15.4618 16.8394 15.4618 16.4489 15.0713C16.0584 14.6807 16.0584 14.0476 16.4489 13.657L21.1058 9.00019H0.47998V7.00019H21.1058L16.4489 2.34334C16.0584 1.95281 16.0584 1.31965 16.4489 0.929124C16.8394 0.538599 17.4726 0.538599 17.8631 0.929124Z")
+        // path.setAttribute('fill', '#753BBD')
+        iconPath.setAttribute(
+            'd',
+            'M17.8631 0.929124L24.2271 7.29308C24.6176 7.68361 24.6176 8.31677 24.2271 8.7073L17.8631 15.0713C17.4726 15.4618 16.8394 15.4618 16.4489 15.0713C16.0584 14.6807 16.0584 14.0476 16.4489 13.657L21.1058 9.00019H0.47998V7.00019H21.1058L16.4489 2.34334C16.0584 1.95281 16.0584 1.31965 16.4489 0.929124C16.8394 0.538599 17.4726 0.538599 17.8631 0.929124Z'
+        );
+        iconPath.setAttribute('fill','#753BBD');
+
+        iconSvg.appendChild(iconPath);
+        span.appendChild(iconSvg);
+        a.appendChild(h3);
+        a.appendChild(h4);
+        a.appendChild(p);
+        a.appendChild(span);
+
+        let section = document.getElementById('cards')
+        
+        section.appendChild(a)
+
+     }
+</script>
