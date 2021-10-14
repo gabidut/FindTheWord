@@ -10,11 +10,11 @@ const mysql = require('mysql');
 
 const dbU = mysql.createConnection({
 
-  host: "149.91.91.92",
-  port: 3306,
-  database: "gabidut76_ftw",
-  user: "ftw_admin",
-  password: "~Bhl28x7",
+  host: "xxx",
+  port: xxx,
+  database: "xxx",
+  user: "xxx",
+  password: "xxx",
   dialect: 'mysql'
 });
 
