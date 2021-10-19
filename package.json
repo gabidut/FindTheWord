@@ -8,7 +8,7 @@
     "express-session": "^1.17.2",
     "hashmap": "^2.4.0",
     "mysql": "^2.18.1",
-    "mysql2": "^2.3.0",
+    "mysql2": "^2.3.2",
     "roomdata": "^1.1.7-b",
     "sequelize": "^6.6.5",
     "socket.io": "^4.2.0"
