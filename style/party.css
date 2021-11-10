@@ -73,7 +73,7 @@
 }
 .data-card .link-text {
   display: block;
-  color: #753BBD;
+  color: #2320b1;
   font-size: 1.125em;
   font-weight: 600;
   line-height: 1.2;
@@ -88,12 +88,12 @@
   transition: fill 0.45s ease;
 }
 .data-card:hover {
-  background: #753BBD;
+  background: #2320b1;
   transform: scale(1.02);
 }
 .data-card:hover h3 {
   color: #FFFFFF;
-  border-bottom-color: #A754C4;
+  border-bottom-color: #2320b1;
 }
 .data-card:hover h4 {
   color: #FFFFFF;
@@ -141,12 +141,22 @@
 
 .stat {
     border-radius: 20px;
-    width: 30%;
-    height: 25%;
     margin-top: 10%;
-    margin-left: 60%;
     z-index: 300;
+    margin-left: 10%;
     color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.two {
+    height: 45%;
+    width: 50%;
+}
+
+.one {
+    height: 70%;
+    width: 50%;
 }
 
 /*  */
@@ -193,6 +203,7 @@ body {
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,500,700');
 html,
 body {
+    overflow-x: hidden;
     background: linear-gradient(90deg, rgba(24,11,241,1) 0%, rgba(0,212,255,1) 100%);    
     margin: 0;
     padding: 0;
@@ -210,8 +221,9 @@ body {
     margin-left: 50px;
     margin-bottom: 100%;
     height: 50%;
-    width: 50%;
-    overflow: hidden;
+    max-height: 500px;
+    width: 90%;
+    overflow-x: hidden;
     border-radius: 10px;
 }
 

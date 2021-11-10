@@ -154,12 +154,7 @@
     window.addEventListener('load', socket.emit('add'), false )
 
     socket.on('listPartys', function(game_id, players_number, owner) {
-        let i = 0;
-        for (const element of Object(game_id)) {
-            // console.log(element[`${Object.keys(element)}`])
-            c(Object.keys(element), players_number, element[`${Object.keys(element)}`], Object.keys(element));
-            i++;
-        }
+        c(game_id, players_number, owner, game_id);
     });
 
     function c(id, nb, owner, redirect) { 
@@ -182,7 +177,7 @@
         h3.innerText = id
         h4.innerText = nb + " Joueurs dans la partie."
         
-        a.setAttribute('href', '/auth/' + redirect)
+        a.setAttribute('href', `/auth2?game=${redirect}`)
         a.setAttribute('class', 'data-card')
 
         p.innerText = "Partie hébergée par " + owner
@@ -221,7 +216,7 @@
         a.appendChild(p);
         a.appendChild(span);
 
-        let section = document.getElementById('cards')
+        let section = document.getElementById('cards');
         
         section.appendChild(a)
 

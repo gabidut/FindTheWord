@@ -7,14 +7,24 @@ const http = require('http').createServer(app);
 var io = require('socket.io')(http); 
 const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
+const fs = require('fs');
+const cors = require('cors');
+
+app.use(cors({
+  'allowedHeaders': ['sessionId', 'Content-Type'],
+  'exposedHeaders': ['sessionId'],
+  'origin': '*',
+  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  'preflightContinue': false
+}));
 
 const dbU = mysql.createConnection({
 
-  host: "xxx",
-  port: xxx,
-  database: "xxx",
-  user: "xxx",
-  password: "xxx",
+  host: "149.91.91.92",
+  port: 3306,
+  database: "gabidut76_ftw",
+  user: "ftw_admin",
+  password: "~Bhl28x7",
   dialect: 'mysql'
 });
 
@@ -35,16 +45,20 @@ app.get('/', (req, res) => {
     return res.redirect('main');
 })
 
+app.get('/500', (req, res) => {
+  res.sendStatus(500)
+})
+
 app.get('/whyT', (req, res) => {
   res.sendFile(__dirname + '/html/whyT.html')
   
 })
 
 app.post('/authlog', (req, res) => {
-  dbU.query(`SELECT * FROM \`users\` where \`username\` = "${dbU.escape(req.body.username)}";`, function (err, result) {
+  dbU.query(`SELECT * FROM \`users\` where \`username\` = "${req.body.username}";`, function (err, result) {
     if (err) console.log(err) ;
     if(JSON.stringify(result).length > 20) {
-      dbU.query(`SELECT * FROM \`users\` where \`username\` = "${dbU.escape(req.body.username)}";`, function (err, result) {
+      dbU.query(`SELECT * FROM \`users\` where \`username\` = "${req.body.username}";`, function (err, result) {
         if(Object(result)[0]["password"] == req.body.password) {
           res.cookie('username', req.body.username)
           res.cookie('rank', Object(result)[0]["rank"])
@@ -61,16 +75,28 @@ app.post('/authlog', (req, res) => {
   // res.sendFile(__dirname + '/html/authlog.html')
 })
 app.get('/auth', (req, res) => {
-  res.sendFile(__dirname + '/html/auth.html')
-})
-
-app.get('/auth/CEN-001', (req, res) => {
-  res.cookie('party', 'CEN-001')
+  res.cookie('party', req.query['game'])
   if(req.cookies['username'] == null) {
     res.sendFile(__dirname + '/html/auth.html')
   } else {
     res.redirect('/party/')
   }
+})
+
+app.get('/auth2/', (req, res) => {
+  // 
+  console.log(req.query['game'])
+  if(req.query['game'] == undefined) {
+    res.sendStatus(418)
+  } else {
+    res.redirect(`/auth?game=` + req.query['game'])
+  }
+  // res.cookie('party', 'CEN-001')
+  // if(req.cookies['username'] == null) {
+  //   res.sendFile(__dirname + '/html/auth.html')
+  // } else {
+  //   res.redirect('/party/')
+  // }
 
 })
 
@@ -80,7 +106,7 @@ app.get('/party', (req, res) => {
 app.use('/verify', (req, res) => {
   res.cookie('username', "[J] " + req.body.username)
 
-  res.redirect("/main")
+  res.redirect("/party")
 })
 
 app.get('/login', (req, res) => {
@@ -98,6 +124,11 @@ app.get('/d', (req, res) => {
 
 app.use(express.static('style'));
 
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 // io.on('add', socket => {
 //     console.log("oké")
@@ -141,6 +172,26 @@ io.on('connection', (socket) => {
       socket.emit('login!', cookies['username'], "whyT")
     }
   });
+  socket.on("a", async () => {
+    io.to(cookies['party']).emit('gameAction', "0002", "a/startBip");
+    io.to(cookies['party']).emit('GameStatus', 'Début de la partie dans 5');
+    await sleep(1000)
+    io.to(cookies['party']).emit('GameStatus', 'Début de la partie dans 4');
+    await sleep(1000)
+    io.to(cookies['party']).emit('GameStatus', 'Début de la partie dans 3');
+    await sleep(1000)
+    io.to(cookies['party']).emit('GameStatus', 'Début de la partie dans 2');
+    await sleep(1000)
+    io.to(cookies['party']).emit('GameStatus', 'Début de la partie dans 1');
+    await sleep(1000)
+    io.to(cookies['party']).emit('GameStatus', 'Début !');
+    console.log(cookies['party'] + " has been started.");
+    io.to(cookies['party']).emit('gameAction', "0001");
+  });
+  socket.on("a1", () => {
+    io.to(cookies['party']).emit('gameAction', "0001");
+    io.to(cookies['party']).emit('GameStatus', 'Vous êtes sur la CEN-001 selon la bdd\n\nEn attente du chef... (gabidut76)')
+  });
   socket.on("getPartys", () => {
     if(partys["nothing"]) {
       socket.emit('listPartys', "Aucune partie en cours :(", "0 / 0", "N/A")
@@ -162,20 +213,37 @@ io.on('connection', (socket) => {
   });
   socket.on('add', () => {
     partys = JSON.parse(`[{"CEN-001":["FindTheWord"]}]`)
-    
-    v = io.in(cookies['party']).allSockets()
-    const socketsInARoomInSomeNamespace = io
-    .in(cookies['party'])
-    .fetchSockets()
-    .then((room) => {
-      socket.emit('listPartys', partys, `${room.length} / 20`, Object.keys(partys)[1])
+
+    fs.readdir('games', (err, files) => {
+      files.forEach(file => {
+        console.log(file);
+        var data = fs.readFileSync(`games/${file}`, 'utf8');
+        var values = JSON.parse(data.toString());
+        console.log(values[0]);
+        v = io.in(cookies['party']).allSockets()
+        const socketsInARoomInSomeNamespace = io
+        .in(values[0]['name'])
+        .fetchSockets()
+        .then((room) => {
+          socket.emit('listPartys', values[0]['name'], `${room.length} / 20`, values[0]['host'])
+        });
+      });
     });
+    
+    
+
   });
   socket.on('GameStatus?', () => {
     //socket.emit('GameStatus', cookies['party'].status)
     dbU.query(`SELECT * FROM \`data\` where \`name\` = "${cookies['party']}";`, function (err, result) {
       if (err) console.log(err) ;
-      socket.emit('GameStatus', Object(result)[0]['state']);
+      console.log(result.toString())
+      if(result.toString() == '') {
+        socket.emit('e', 500)
+      } else {
+        socket.emit('GameStatus', Object(result)[0]['state']);
+
+      }
     });
 
 
@@ -183,9 +251,10 @@ io.on('connection', (socket) => {
 
   });
   socket.on('GameStatus', (status) => {
-    dbU.query(`UPDATE \`data\` SET \`state\` = '${dbU.escape(status)}' WHERE \`data\`.\`name\` = '${cookies['party']}';`, function (err, result) {
-      dbU.query(`SELECT * FROM \`data\` where \`name\` = "${dbU.escape(cookies['party'])}";`, function (err, result) {
+    dbU.query(`UPDATE \`data\` SET \`state\` = "${status}" WHERE \`data\`.\`name\` = "${cookies['party']}";`, function (err, result) {
+      dbU.query(`SELECT * FROM \`data\` where \`name\` = "${cookies['party']}";`, function (err, result) {
         if (err) console.log(err) ;
+        console.log(result)
         if(!Object(result)[0]['state']) {
           socket.emit('GameStatus', 'mmmh un erreur est survenue..');
           io.to(cookies['party']).emit('GameStatus', 'mmmh un erreur est survenue..');
