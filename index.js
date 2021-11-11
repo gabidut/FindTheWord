@@ -289,7 +289,7 @@ io.on('connection', (socket) => {
 
   });
   socket.on('GameStatus', (status) => {
-    dbU.query(`UPDATE \`data\` SET \`state\` = "${status}" WHERE \`data\`.\`name\` = ?`, [cookies['party']], function (err, result) {
+    dbU.query(`UPDATE \`data\` SET \`state\` = ? WHERE \`data\`.\`name\` = ?`, [status, cookies['party']], function (err, result) {
       dbU.query(`SELECT * FROM \`data\` where \`name\` = ?`, [cookies['party']],  function (err, result) {
         if (err) console.log(err) ;
         // console.log(result)
