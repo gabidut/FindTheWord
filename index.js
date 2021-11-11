@@ -26,6 +26,7 @@ var logins = require ("./credits");
 
 
 const rateLimit = require("express-rate-limit");
+var md5 = require('md5');
 const limiter = rateLimit({
   windowMs: 3 * 60 * 1000,
   max: 500 
@@ -183,7 +184,7 @@ io.on('connection', (socket) => {
   });
   socket.on("checkLog", (usr, passwd) => {
 
-    console.log("Tryied to loggin : " + usr + " " + passwd)
+    console.log("Tryied to loggin : " + usr + " " + md5(passwd) + " (mdp en md5)")
   });
   socket.on("party?", () => {
     if(cookies['party'] == null) {

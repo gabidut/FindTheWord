@@ -9,6 +9,7 @@
     "express-rate-limit": "^5.5.1",
     "express-session": "^1.17.2",
     "hashmap": "^2.4.0",
+    "md5": "^2.3.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "roomdata": "^1.1.7-b",
