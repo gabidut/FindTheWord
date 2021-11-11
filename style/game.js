@@ -9,6 +9,11 @@ socket.on("gameAction", function(nb, arg0) {
           // document.getElementById('chatMSG').remove();
           // document.getElementById('sbm').remove();
           document.getElementById('divChat').remove();
+          document.getElementById('joined').remove();
+          document.getElementById('additive').remove();
+          document.getElementById('party').remove();
+          document.getElementById('game').remove();
+          document.getElementById('launch').remove();
           console.log("Jeu lancé.");
           break;
           case "0002":

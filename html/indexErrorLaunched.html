@@ -1,3 +1,4 @@
+<!-- Copie de la page index.html mais avec l'alert de lancement. -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,89 +9,69 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page d'acceuil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' type='text/css' media='screen' href='../party.css'>
-    <script src="../errors.js"></script>
-
+    <link rel='stylesheet' type='text/css' media='screen' href='party.css'>
 </head>
 <body style="margin-top: 0%; margin-left: 0%;">
     <nav class="nav topnav" id="myTopnav">
         <div class="container">
             <div class="logo">
-                <a href="../">FindTheWord</a>
+                <a href="#">FindTheWord</a>
                 <button style="background-color: transparent; border: none; text-align: right;" class="hidden" id="btn1" onclick="change()"><i class="ilogo fas fa-bars"></i></button>
             </div>
             <div id="navlinks" class="main_list">
                 <ul class="navlinks">
                     <li><button style="background-color: transparent; border: none;" id="btn0" onclick="change()"><i class="ilogo fas fa-bars"></i></button></li>
-                    <li><a href="#" id="launch">Lancer une partie</a></li>
+                    <li><a href="#">Lancer une partie</a></li>
                     <li><a href="#">Crédits</a></li>
                     <li><a href="login" id="loginField"></a></li>
                 </ul>
             </div>
         </div>
     </nav>
-      <br><br><br><br><br><br>
+    <section class="home">
+        <br><br><br><br><br><br><br>
+        <h2 class="myH2">Rejoindre une partie centrale :</h2>
 
-      <h2 class="myH2" id="game">Vous êtes dans la partie :</h2>
-      <h2 class="myH2" id="party">###-###</h2>
-      <br>
-      <h2 class="myH2" id="joined">Connection, ...</h2>
-      <div id="additive"></div>
-      <div class="stat">
-          <div class="one">
-            <h1 class="statmsg" id="stat">Chargement...</h1>
+        <section class="page-contain" id="cards">
+            <!-- <a href="#" class="data-card">
+              <h3>AAA-000</h3>
+              <h4>00/00 Joueurs dans la partie</h4>
+              <p>Partie hébergée par ####</p>
+              <span class="link-text">
+                Rejoindre
+                <svg width="25" height="16" viewBox="0 0 25 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M17.8631 0.929124L24.2271 7.29308C24.6176 7.68361 24.6176 8.31677 24.2271 8.7073L17.8631 15.0713C17.4726 15.4618 16.8394 15.4618 16.4489 15.0713C16.0584 14.6807 16.0584 14.0476 16.4489 13.657L21.1058 9.00019H0.47998V7.00019H21.1058L16.4489 2.34334C16.0584 1.95281 16.0584 1.31965 16.4489 0.929124C16.8394 0.538599 17.4726 0.538599 17.8631 0.929124Z" fill="#753BBD"/>
+          </svg>
+              </span>
+            </a> -->
+          </section>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert" onclick="del()" style="margin: 10px;">
+            <strong>Impossible de rejoindre cette partie.</strong> Cette partie est déjà lancée.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
-        <div class="two">
-            <div class="chatCtn" id="divChat">
+          <script>
+              function del() { 
+                document.getElementById("alert").remove();
+               }
+          </script>
+    </section>
 
-                <div class="into" >
-                    <h2 class="myH2" id="titleChat">Chat de partie :</h2>
-                    <div id="msg">
-        
-                    </div>
-                        <form id="chat">
-                            <input type="text" id="chatMSG" class="ipt"><input type="submit" class="submit" id="sbm"></button>
-                        </form>
-                </div>
-                
-            </div>
-        </div>
+    <div style="height: 1000px">
+        <br>
+
     </div>
-
-
-
 
 <!-- Jquery needed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <!-- <script src="js/scripts.js"></script> -->
 
 <!-- Function used to shrink nav bar removing paddings and adding black background -->
-    <script>
-        $(window).scroll(function() {
-            if ($(document).scrollTop() > 50) {
-                $('.nav').addClass('affix');
-                // console.log("OK");
-            } else {
-                $('.nav').removeClass('affix');
-            }
-        });
-
-        
-  var form = document.getElementById('chat');
-  var input = document.getElementById('chatMSG');
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (input.value) {
-      socket.emit('messageParty', input.value);
-      input.value = '';
-    }
-  });
-    </script>
-</body>
-</html>
-
 <script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+    console.log("DOM entièrement chargé et analysé");
+    change()
+    change()
+    });
     var display = true;
     function change() {
         console.log(display)
@@ -141,7 +122,7 @@
 
     //     }
     // });
-
+    
     $('.navTrigger').click(function () {
     $(this).toggleClass('active');
     console.log("Clicked menu");
@@ -151,95 +132,40 @@
 
 });
 
+
+
+</script>
+<script>
+    $(window).scroll(function() {
+        if ($(document).scrollTop() > 50) {
+            $('.nav').addClass('affix');
+            // console.log("OK");
+        } else {
+            $('.nav').removeClass('affix');
+        }
+    });
 </script>
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
 
-    function myFunction() {
-        var x = document.getElementById("myTopnav");
-        if (x.className === "topnav") {
-            x.className += " responsive";
-        } else {
-            x.className = "topnav";
-        }
-}
     var socket = io();
-    socket.on('e', (v) => {
-    switch (v) {
-        case 500:
-            window.location.replace("../500");
-            console.log(500)
-    }
-
-})
     function init() {
         const total = 0;
         socket.emit('login?')
-        socket.emit('party?')
-        socket.emit('connectMe')
-        socket.emit('nPlayer?')
-        socket.emit('GameStatus?')
     }
 
-    
-    
-    socket.on("nPlayer!", function(nb) { 
-        h2 = document.createElement("h2");
-        h2.setAttribute('class', 'myH2')
-        h2.innerHTML = "Vous êtes actuellement : " + nb;
-        document.getElementById('additive').appendChild(h2)
-    })
-    socket.on("GameStatus", function(text) { 
-        if(text == "Launched") {
-            location.href = "../main?e=launched";
-        } else {
-            document.getElementById("stat").innerText = text;
-        }
-    })
-    socket.on("connected", function(text) { 
-        document.getElementById("joined").innerText = text;
-    })
-    socket.on("party!", function(text) { 
-        document.getElementById("party").innerText = text;
-    })
-    socket.on("msg", function(text, id) { 
-        h2 = document.createElement("h2");
-        h2.setAttribute('class', 'myH2²');
-        h2.setAttribute('id', id);
-        h2.innerHTML = text;
-        document.getElementById('msg').appendChild(h2);
-        if(getCookie('rank') == 'owner') {
-            console.log('yep and admin');
-            delBtn = document.createElement("i");
-            delBtn.setAttribute('class', 'fas fa-trash');
-            document.getElementById(id).appendChild(h2);
-        }
-        if(getCookie('rank') == 'moderator') {
-            console.log('yep and mod');
-            var delBtn = document.createElement("i");
-            delBtn.setAttribute('class', 'fas fa-trash');
-            document.getElementById(id).appendChild(delBtn);
-        }
-
-    })
     socket.on("login!", function(text, href) { 
         document.getElementById("loginField").innerText = text;
-        document.getElementById("loginField").setAttribute('href', '../whyT');
-        
+        document.getElementById("loginField").setAttribute('href', href);
     })
     
 
-    window.addEventListener('load', init(), false );
-    // window.addEventListener('load', socket.emit('add'), false );
+    window.addEventListener('load', init(), false )
+    window.addEventListener('load', socket.emit('add'), false )
 
     socket.on('listPartys', function(game_id, players_number, owner) {
-        let i = 0;
-        for (const element of Object(game_id)) {
-            // console.log(element[`${Object.keys(element)}`])
-            c(Object.keys(element), players_number, element[`${Object.keys(element)}`], Object.keys(element));
-            i++;
-        }
+        c(game_id, players_number, owner, game_id);
     });
 
     function c(id, nb, owner, redirect) { 
@@ -262,7 +188,7 @@
         h3.innerText = id
         h4.innerText = nb + " Joueurs dans la partie."
         
-        a.setAttribute('href', '/auth/' + redirect)
+        a.setAttribute('href', `/auth2?game=${redirect}`)
         a.setAttribute('class', 'data-card')
 
         p.innerText = "Partie hébergée par " + owner
@@ -301,30 +227,9 @@
         a.appendChild(p);
         a.appendChild(span);
 
-        let section = document.getElementById('cards')
+        let section = document.getElementById('cards');
         
         section.appendChild(a)
 
      }
-
-     function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for(let i = 0; i <ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-
 </script>
-<script src="https://cdn.rawgit.com/adriancooney/console.image/c9e6d4fd/console.image.min.js" crossorigin="anonymous"></script>
-
-<script src="../game.js"></script>

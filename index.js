@@ -9,6 +9,13 @@ const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
 const fs = require('fs');
 const cors = require('cors');
+const rateLimit = require("express-rate-limit");
+const limiter = rateLimit({
+  windowMs: 3 * 60 * 1000,
+  max: 500 
+});
+
+// 500req / 3mins
 
 app.use(cors({
   'allowedHeaders': ['sessionId', 'Content-Type'],
@@ -17,14 +24,15 @@ app.use(cors({
   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
   'preflightContinue': false
 }));
+app.use(limiter);
 
 const dbU = mysql.createConnection({
 
-  host: "149.91.91.92",
+  host: "92.222.250.141",
   port: 3306,
-  database: "gabidut76_ftw",
-  user: "ftw_admin",
-  password: "~Bhl28x7",
+  database: "s7_ftw",
+  user: "u7_UODJ35tmXh",
+  password: "@na72g0TD^aa7uYllW^tX17f",
   dialect: 'mysql'
 });
 
@@ -46,12 +54,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/500', (req, res) => {
-  res.sendStatus(500)
+  res.send("Code d'erreur ACT-0003 ou ACT-0004, rendez-vous sur le support.", 500)
 })
 
 app.get('/whyT', (req, res) => {
   res.sendFile(__dirname + '/html/whyT.html')
-  
 })
 
 app.post('/authlog', (req, res) => {
@@ -114,7 +121,12 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/main', (req, res) => {
+  console.log("GET /main args : ", req.query["e"])
+  if(req.query["e"] == "launched") {
+    res.sendFile(__dirname + '/html/indexErrorLaunched.html', {connect:req.cookies['username']})
+  } else {
     res.sendFile(__dirname + '/html/index.html', {connect:req.cookies['username']})
+  }
 })
 
 app.get('/d', (req, res) => {
@@ -187,6 +199,10 @@ io.on('connection', (socket) => {
     io.to(cookies['party']).emit('GameStatus', 'Début !');
     console.log(cookies['party'] + " has been started.");
     io.to(cookies['party']).emit('gameAction', "0001");
+        dbU.query(`UPDATE \`s7_ftw\`.\`data\` SET \`state\`='Launched' WHERE  \`name\`=${cookies['party']};";`, function (err, result) {
+          if (err) console.log(err) ;
+          // console.log(result.toString())
+        });
   });
   socket.on("a1", () => {
     io.to(cookies['party']).emit('gameAction', "0001");
@@ -200,23 +216,29 @@ io.on('connection', (socket) => {
   socket.on('messageParty', (content) => {
     min = 100000
     max = 999999
-    if(cookies['rank']) {
-      if(cookies['rank'] == 'owner') {
-        io.to(cookies['party']).emit('msg', "<span id=\"owner\">👑 </span>" + cookies['username'] + " - " + content, Math.random() * (max - min + 1) + min);
-      }
-      if(cookies['rank'] == 'moderator') {
-        io.to(cookies['party']).emit('msg', "<span id=\"mod\">🛡️ </span>" + cookies['username'] + " - " + content, Math.random() * (max - min + 1) + min);
-      }
+    console.log(cookies['username'])
+    if(cookies['username'] == "undefined" ||cookies['username' == null ]|| cookies['username'] == undefined) {
+      socket.emit('e', 500)
     } else {
-      io.to(cookies['party']).emit('msg', cookies['username'].replace('🛡️', "❌").replace('👑', "❌") + " - " + content, Math.random() * (max - min + 1) + min);
+      if(cookies['rank']) {
+        if(cookies['rank'] == 'owner') {
+          io.to(cookies['party']).emit('msg', "<span id=\"owner\">👑 </span>" + cookies['username'] + " - " + content, Math.random() * (max - min + 1) + min);
+        }
+        if(cookies['rank'] == 'moderator') {
+          io.to(cookies['party']).emit('msg', "<span id=\"mod\">🛡️ </span>" + cookies['username'] + " - " + content, Math.random() * (max - min + 1) + min);
+        }
+      } else {
+        io.to(cookies['party']).emit('msg', cookies['username'].replace('🛡️', "❌").replace('👑', "❌") + " - " + content, Math.random() * (max - min + 1) + min);
+      }
     }
+
   });
   socket.on('add', () => {
     partys = JSON.parse(`[{"CEN-001":["FindTheWord"]}]`)
 
     fs.readdir('games', (err, files) => {
       files.forEach(file => {
-        console.log(file);
+        // console.log(file);
         var data = fs.readFileSync(`games/${file}`, 'utf8');
         var values = JSON.parse(data.toString());
         console.log(values[0]);
@@ -237,7 +259,7 @@ io.on('connection', (socket) => {
     //socket.emit('GameStatus', cookies['party'].status)
     dbU.query(`SELECT * FROM \`data\` where \`name\` = "${cookies['party']}";`, function (err, result) {
       if (err) console.log(err) ;
-      console.log(result.toString())
+      // console.log(result.toString())
       if(result.toString() == '') {
         socket.emit('e', 500)
       } else {
@@ -254,7 +276,7 @@ io.on('connection', (socket) => {
     dbU.query(`UPDATE \`data\` SET \`state\` = "${status}" WHERE \`data\`.\`name\` = "${cookies['party']}";`, function (err, result) {
       dbU.query(`SELECT * FROM \`data\` where \`name\` = "${cookies['party']}";`, function (err, result) {
         if (err) console.log(err) ;
-        console.log(result)
+        // console.log(result)
         if(!Object(result)[0]['state']) {
           socket.emit('GameStatus', 'mmmh un erreur est survenue..');
           io.to(cookies['party']).emit('GameStatus', 'mmmh un erreur est survenue..');
