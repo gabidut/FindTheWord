@@ -9,6 +9,22 @@ const cookieParser = require('cookie-parser');
 const mysql = require('mysql');
 const fs = require('fs');
 const cors = require('cors');
+var logins = require ("./credits");
+
+// Exemplde de credits.js
+
+// module.exports = {
+//   host: "92.222.250.141",
+//   port: 3306,
+//   database: "s7_ftw",
+//   user: "u7_UODJ35tmXh",
+//   password: "@na72g0TD^aa7uYllW^tX17f",
+//   dialect: 'mysql'
+// };
+
+
+
+
 const rateLimit = require("express-rate-limit");
 const limiter = rateLimit({
   windowMs: 3 * 60 * 1000,
@@ -27,13 +43,12 @@ app.use(cors({
 app.use(limiter);
 
 const dbU = mysql.createConnection({
-
-  host: "92.222.250.141",
-  port: 3306,
-  database: "s7_ftw",
-  user: "u7_UODJ35tmXh",
-  password: "@na72g0TD^aa7uYllW^tX17f",
-  dialect: 'mysql'
+  host: logins.host,
+  port: logins.port,
+  database: logins.database,
+  user: logins.user,
+  password: logins.password,
+  dialect: logins.dialect
 });
 
 dbU.connect(function(err) {
