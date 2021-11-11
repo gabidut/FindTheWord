@@ -184,7 +184,7 @@ io.on('connection', (socket) => {
   });
   socket.on("checkLog", (usr, passwd) => {
 
-    console.log("Tryied to loggin : " + usr + " " + md5(passwd) + " (mdp en md5)")
+    console.log("Tryied to loggin : " + usr)
   });
   socket.on("party?", () => {
     if(cookies['party'] == null) {
