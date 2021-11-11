@@ -9,18 +9,20 @@
     <title>Page d'acceuil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' media='screen' href='../party.css'>
+    <script src="../errors.js"></script>
+
 </head>
 <body style="margin-top: 0%; margin-left: 0%;">
     <nav class="nav topnav" id="myTopnav">
         <div class="container">
             <div class="logo">
-                <a href="#">FindTheWord</a>
+                <a href="../">FindTheWord</a>
                 <button style="background-color: transparent; border: none; text-align: right;" class="hidden" id="btn1" onclick="change()"><i class="ilogo fas fa-bars"></i></button>
             </div>
             <div id="navlinks" class="main_list">
                 <ul class="navlinks">
                     <li><button style="background-color: transparent; border: none;" id="btn0" onclick="change()"><i class="ilogo fas fa-bars"></i></button></li>
-                    <li><a href="#">Lancer une partie</a></li>
+                    <li><a href="#" id="launch">Lancer une partie</a></li>
                     <li><a href="#">Crédits</a></li>
                     <li><a href="login" id="loginField"></a></li>
                 </ul>
@@ -29,27 +31,32 @@
     </nav>
       <br><br><br><br><br><br>
 
-      <h2 class="myH2">Vous êtes dans la partie :</h2>
+      <h2 class="myH2" id="game">Vous êtes dans la partie :</h2>
       <h2 class="myH2" id="party">###-###</h2>
       <br>
       <h2 class="myH2" id="joined">Connection, ...</h2>
       <div id="additive"></div>
       <div class="stat">
-        <h1 class="statmsg" id="stat">Chargement...</h1>
-    </div>
-      <div class="chatCtn">
+          <div class="one">
+            <h1 class="statmsg" id="stat">Chargement...</h1>
+          </div>
+        <div class="two">
+            <div class="chatCtn" id="divChat">
 
-        <div class="into">
-            <h2 class="myH2">Chat de partie :</h2>
-            <div id="msg">
-
-            </div>
-                <form id="chat">
-                    <input type="text" id="chatMSG" class="ipt"><input type="submit" class="submit"></button>
-                </form>
-        </div>
+                <div class="into" >
+                    <h2 class="myH2" id="titleChat">Chat de partie :</h2>
+                    <div id="msg">
         
+                    </div>
+                        <form id="chat">
+                            <input type="text" id="chatMSG" class="ipt"><input type="submit" class="submit" id="sbm"></button>
+                        </form>
+                </div>
+                
+            </div>
+        </div>
     </div>
+
 
 
 
@@ -148,6 +155,7 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
+
     function myFunction() {
         var x = document.getElementById("myTopnav");
         if (x.className === "topnav") {
@@ -157,6 +165,14 @@
         }
 }
     var socket = io();
+    socket.on('e', (v) => {
+    switch (v) {
+        case 500:
+            window.location.replace("../500");
+            console.log(500)
+    }
+
+})
     function init() {
         const total = 0;
         socket.emit('login?')
@@ -165,15 +181,21 @@
         socket.emit('nPlayer?')
         socket.emit('GameStatus?')
     }
+
+    
+    
     socket.on("nPlayer!", function(nb) { 
-        console.log(nb)
         h2 = document.createElement("h2");
         h2.setAttribute('class', 'myH2')
         h2.innerHTML = "Vous êtes actuellement : " + nb;
         document.getElementById('additive').appendChild(h2)
     })
     socket.on("GameStatus", function(text) { 
-        document.getElementById("stat").innerText = text;
+        if(text == "Launched") {
+            location.href = "../main?e=launched";
+        } else {
+            document.getElementById("stat").innerText = text;
+        }
     })
     socket.on("connected", function(text) { 
         document.getElementById("joined").innerText = text;
@@ -300,4 +322,9 @@
   }
   return "";
 }
+
+
 </script>
+<script src="https://cdn.rawgit.com/adriancooney/console.image/c9e6d4fd/console.image.min.js" crossorigin="anonymous"></script>
+
+<script src="../game.js"></script>

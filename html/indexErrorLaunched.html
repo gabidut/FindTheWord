@@ -1,3 +1,4 @@
+<!-- Copie de la page index.html mais avec l'alert de lancement. -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +45,17 @@
               </span>
             </a> -->
           </section>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert" onclick="del()" style="margin: 10px;">
+            <strong>Impossible de rejoindre cette partie.</strong> Cette partie est déjà lancée.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <script>
+              function del() { 
+                document.getElementById("alert").remove();
+               }
+          </script>
     </section>
+
     <div style="height: 1000px">
         <br>
 
