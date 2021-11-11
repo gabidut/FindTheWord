@@ -187,7 +187,7 @@
     socket.on("nPlayer!", function(nb) { 
         h2 = document.createElement("h2");
         h2.setAttribute('class', 'myH2')
-        h2.innerHTML = "Vous êtes actuellement : " + nb;
+        h2.innerText = "Vous êtes actuellement : " + nb;
         document.getElementById('additive').appendChild(h2)
     })
     socket.on("GameStatus", function(text) { 
@@ -207,16 +207,14 @@
         h2 = document.createElement("h2");
         h2.setAttribute('class', 'myH2²');
         h2.setAttribute('id', id);
-        h2.innerHTML = text;
+        h2.innerText = text;
         document.getElementById('msg').appendChild(h2);
         if(getCookie('rank') == 'owner') {
-            console.log('yep and admin');
             delBtn = document.createElement("i");
             delBtn.setAttribute('class', 'fas fa-trash');
             document.getElementById(id).appendChild(h2);
         }
         if(getCookie('rank') == 'moderator') {
-            console.log('yep and mod');
             var delBtn = document.createElement("i");
             delBtn.setAttribute('class', 'fas fa-trash');
             document.getElementById(id).appendChild(delBtn);

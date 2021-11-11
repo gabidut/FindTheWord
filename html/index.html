@@ -150,8 +150,8 @@
     })
     
 
-    window.addEventListener('load', init(), false )
-    window.addEventListener('load', socket.emit('add'), false )
+    window.addEventListener('load', init(), false );
+    window.addEventListener('load', socket.emit('add'), false );
 
     socket.on('listPartys', function(game_id, players_number, owner) {
         c(game_id, players_number, owner, game_id);

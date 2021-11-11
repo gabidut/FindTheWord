@@ -81,7 +81,7 @@ app.post('/authlog', (req, res) => {
   dbU.query("SELECT * FROM \`users\` where \`username\` = ?", [req.body.username] ,function (err, result) {
     if (err) console.log(err) ;
     if(JSON.stringify(result).length > 20) {
-      dbU.query(`SELECT * FROM \`users\` where \`username\` = "${req.body.username}";`, function (err, result) {
+      dbU.query(`SELECT * FROM \`users\` where \`username\` = ?`, [req.body.username], function (err, result) {
         if(Object(result)[0]["password"] == req.body.password) {
           res.cookie('username', req.body.username)
           res.cookie('rank', Object(result)[0]["rank"])
@@ -238,13 +238,13 @@ io.on('connection', (socket) => {
     } else {
       if(cookies['rank']) {
         if(cookies['rank'] == 'owner') {
-          io.to(cookies['party']).emit('msg', "<span id=\"owner\">👑 </span>" + cookies['username'] + " - " + content, Math.random() * (max - min + 1) + min);
+          io.to(cookies['party']).emit('msg', "<span id=\"owner\">👑 </span>" + cookies['username'] + " - " + escape(content), Math.random() * (max - min + 1) + min);
         }
         if(cookies['rank'] == 'moderator') {
-          io.to(cookies['party']).emit('msg', "<span id=\"mod\">🛡️ </span>" + cookies['username'] + " - " + content, Math.random() * (max - min + 1) + min);
+          io.to(cookies['party']).emit('msg', "<span id=\"mod\">🛡️ </span>" + cookies['username'] + " - " + escape(content), Math.random() * (max - min + 1) + min);
         }
       } else {
-        io.to(cookies['party']).emit('msg', cookies['username'].replace('🛡️', "❌").replace('👑', "❌") + " - " + content, Math.random() * (max - min + 1) + min);
+        io.to(cookies['party']).emit('msg', cookies['username'].replace('🛡️', "❌").replace('👑', "❌") + " - " + escape(content), Math.random() * (max - min + 1) + min);
       }
     }
 
@@ -289,8 +289,8 @@ io.on('connection', (socket) => {
 
   });
   socket.on('GameStatus', (status) => {
-    dbU.query(`UPDATE \`data\` SET \`state\` = "${status}" WHERE \`data\`.\`name\` = "${cookies['party']}";`, function (err, result) {
-      dbU.query(`SELECT * FROM \`data\` where \`name\` = "${cookies['party']}";`, function (err, result) {
+    dbU.query(`UPDATE \`data\` SET \`state\` = "${status}" WHERE \`data\`.\`name\` = ?`, [cookies['party']], function (err, result) {
+      dbU.query(`SELECT * FROM \`data\` where \`name\` = ?`, [cookies['party']],  function (err, result) {
         if (err) console.log(err) ;
         // console.log(result)
         if(!Object(result)[0]['state']) {
