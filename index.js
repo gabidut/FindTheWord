@@ -14,11 +14,11 @@ var logins = require ("./credits");
 // Exemplde de credits.js
 
 // module.exports = {
-//   host: "92.222.250.141",
-//   port: 3306,
-//   database: "s7_ftw",
-//   user: "u7_UODJ35tmXh",
-//   password: "@na72g0TD^aa7uYllW^tX17f",
+//   host: "ip",
+//   port: xxxx,
+//   database: "xxx",
+//   user: "xxx",
+//   password: "xxx
 //   dialect: 'mysql'
 // };
 
