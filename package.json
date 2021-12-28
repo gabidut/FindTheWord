@@ -13,7 +13,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.0",
     "roomdata": "^1.1.7-b",
-    "sequelize": "^6.9.0",
+    "sequelize": "^6.12.3",
     "socket.io": "^4.2.0"
   }
 }
